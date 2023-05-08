@@ -1,3 +1,77 @@
+filenames = [
+    "2023-02-06.json",
+    "2022-11-21.json",
+    "2022-10-03.json",
+    "2022-05-17.json",
+    "2022-02-07.json",
+    "2021-10-01.json",
+    "2021-07-01.json",
+    "2021-03-15.json",
+    "2020-12-15.json",
+    "2020-09-14.json",
+    "2020-06-15.json",
+    "2020-04-01.json",
+    "2020-01-20.json",
+    "2019-10-14.json",
+    "2019-07-15.json",
+    "2019-04-29.json",
+    "2019-01-29.json",
+    "2018-12-03.json",
+    "2018-09-17.json",
+    "2018-05-21.json",
+    "2018-02-05.json",
+    "2017-11-06.json",
+    "2017-09-18.json",
+    "2017-06-12.json",
+    "2017-03-31.json",
+    "2016-08-29.json",
+    "2016-04-11.json",
+    "2016-02-08.json",
+    "2015-11-09.json",
+    "2015-07-16.json",
+    "2015-04-01.json",
+    "2015-01-01.json",
+    "2014-10-01.json",
+    "2014-07-14.json",
+    "2014-04-01.json",
+    "2014-01-01.json",
+    "2013-10-11.json",
+    "2013-09-01.json",
+    "2013-03-01.json",
+    "2012-09-01.json",
+    "2012-03-01.json",
+    "2011-09-01.json",
+    "2011-03-01.json",
+    "2010-09-01.json",
+    "2010-03-01.json",
+    "2009-09-01.json",
+    "2009-03-01.json",
+    "2008-09-01.json",
+    "2008-05-09.json",
+    "2008-03-01.json",
+    "2007-09-01.json",
+    "2007-06-01.json",
+    "2007-03-01.json",
+    "2006-09-01.json",
+    "2006-04-01.json",
+    "2005-10-01.json",
+    "2005-04-01.json",
+    "2004-10-01.json",
+    "2004-08-25.json",
+    "2004-04-19.json",
+    "2004-02-02.json",
+    "2003-11-17.json",
+    "2003-08-25.json",
+    "2003-07-08.json",
+    "2003-05-08.json",
+    "2003-04-01.json",
+    "2002-12-01.json",
+    "2002-10-01.json",
+    "2002-07-01.json",
+    "2002-05-01.json",
+    "2002-03-01.json"
+]
+
 function findCard(cardname, cardsData) {
 	for (const rawCard of cardsData) {
 		if (rawCard.name.toLowerCase() === cardname.toLowerCase()) {
@@ -264,22 +338,13 @@ function crossData(previousData, newData) {
 
 const dropdown = document.getElementById('fileDropdown');
 
-fetch('banlist/')
-	.then(response => response.text())
-	.then(data => {
-		const filenames = data.match(/"([0-9-]+\.json)"/g).map(name => name.slice(1, -1));
 
-		filenames.sort((a, b) => new Date(b) - new Date(a));
-		filenames.reverse()
-
-		filenames.forEach(filename => {
-			const option = document.createElement('option');
-			option.text = new Date(filename.replace('.json', '')).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-			option.value = filename;
-			dropdown.add(option);
-		});
-	});
-
+filenames.forEach(filename => {
+	const option = document.createElement('option');
+	option.text = new Date(filename.replace('.json', '')).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+	option.value = filename;
+	dropdown.add(option);
+});
 
 dropdown.addEventListener('change', function () {
 	const selectedValue = this.value;
