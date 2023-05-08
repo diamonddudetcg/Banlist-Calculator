@@ -1,7 +1,8 @@
-.cardlist tr td th{
+.cardlist tr td{
 	border: 1px solid #333333;
 	margin-top:50px;
 	font-size: 18px;
+	padding: 4px;
 }
 .cardlist a:link{
 	color: #000000;
@@ -14,6 +15,12 @@
 }
 .cardlist_xyz a:visited{
 	color: #bbbbbb
+}
+tr { 
+	color: #000000;
+	background-color: #eeeeee;
+	font-size: 22px;
+	border: 1px solid #333333;
 }
 .cardlist_synchro td  {
 	background-color: #CCCCCC;
