@@ -339,7 +339,7 @@ const dropdown = document.getElementById('fileDropdown');
 
 filenames.forEach(filename => {
 	const option = document.createElement('option');
-	option.text = new Date(filename.replace('.json', '')).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+	option.text = new Date(filename.replace('.json', '')).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
 	option.value = filename;
 	dropdown.add(option);
 });
