@@ -47,7 +47,7 @@ function convertArrayToNewData(limitArray, cardsData, legalCopies) {
 	return categorizedCards
 }
 
-async function loadCards(){
+async function loadCards() {
 	const cardsResponse = await fetch('cards/cards.json');
 	const cardsData = await cardsResponse.json();
 	return cardsData
@@ -132,21 +132,21 @@ function populateTable(cardList, div, crossData, status) {
 			typeCell.textContent = category.name; // Replace with the card type variable
 			nameCell.innerHTML = `<a href="https://yugipedia.com/wiki/${card.id}">${card.name}</a>`; // Replace with the card ID and name variables
 			statusCell.textContent = status; // Replace with the card status variable
-			
+
 			const remarks = crossData.filter(obj => obj.id === card.id);
 
-			if (remarks.length == 1){
+			if (remarks.length == 1) {
 				oldCopies = remarks[0].oldCopies
-				if (oldCopies == 3){
+				if (oldCopies == 3) {
 					remarksCell.textContent = "New"
-				} else if (oldCopies == 2){
+				} else if (oldCopies == 2) {
 					remarksCell.textContent = "Was Semi-Limited"
-				} else if (oldCopies == 1){
+				} else if (oldCopies == 1) {
 					remarksCell.textContent = "Was Limited"
-				} else if (oldCopies == 0){
+				} else if (oldCopies == 0) {
 					remarksCell.textContent = "Was Forbidden"
 				}
-			} 
+			}
 
 			row.classList.add(category.classname); // Add the CSS class to the table row
 		});
@@ -174,7 +174,7 @@ function populateTables(categorizedData, unlimited, crossData) {
 	} else {
 		semilimitedTable.innerHTML = ""
 	}
-	if (unlimited.length > 0){
+	if (unlimited.length > 0) {
 		populateTable(unlimited, unlimitedTable, crossData, "Unlimited")
 	} else {
 		unlimitedTable.innerHTML = ""
@@ -198,8 +198,8 @@ function crossData(previousData, newData) {
 	}
 
 	newList = []
-	for (const list of [newForbidden, newLimited, newSemilimited]){
-		for (const card of list){
+	for (const list of [newForbidden, newLimited, newSemilimited]) {
+		for (const card of list) {
 			newList.push(card)
 		}
 	}
@@ -207,15 +207,15 @@ function crossData(previousData, newData) {
 	changes = []
 
 	// Check for changes within the banlist: From 0 to 1 or 2, from 1 to 0 or 2 and from 2 to 0 or 1
-	for (const card1 of oldList){
-		for (const card2 of newList){
-			if (card1.id === card2.id){
+	for (const card1 of oldList) {
+		for (const card2 of newList) {
+			if (card1.id === card2.id) {
 				// Check the number of legal copies
-				if (card1.copies != card2.copies){
+				if (card1.copies != card2.copies) {
 					// Legal copies have changed: add it to changes
 					changes.push({
 						id: card1.id,
-						name:card1.name,
+						name: card1.name,
 						oldCopies: card1.copies,
 						newCopies: card2.copies
 					})
@@ -224,35 +224,35 @@ function crossData(previousData, newData) {
 		}
 	}
 	// Check for removals within the new banlist: From 0, 1 or 2 to 3
-	for (const card1 of oldList){
+	for (const card1 of oldList) {
 		var found = false
-		for (const card2 of newList){
-			if (card1.id === card2.id){
+		for (const card2 of newList) {
+			if (card1.id === card2.id) {
 				found = true
 			}
 		}
-		if (!found){
+		if (!found) {
 			// Card is no longer on banlist
 			changes.push({
 				id: card1.id,
-				name:card1.name,
+				name: card1.name,
 				oldCopies: card1.copies,
 				newCopies: 3
 			})
 		}
 	}
 	// Check for new entries into the banlist: From 3 to 0, 1 or 2
-	for (const card1 of newList){
+	for (const card1 of newList) {
 		var found = false
-		for (const card2 of oldList){
-			if (card1.id === card2.id){
+		for (const card2 of oldList) {
+			if (card1.id === card2.id) {
 				found = true
 			}
 		}
-		if (!found){
+		if (!found) {
 			changes.push({
-				id:card1.id,
-				name:card1.name,
+				id: card1.id,
+				name: card1.name,
 				oldCopies: 3,
 				newCopies: card1.copies
 			})
@@ -263,7 +263,7 @@ function crossData(previousData, newData) {
 
 const dropdown = document.getElementById('fileDropdown');
 
-fetch("/banlist/index.json")
+fetch("banlist/index.json")
 	.then(response => response.json())
 	.then(data => {
 		data.forEach(filename => {
@@ -273,10 +273,10 @@ fetch("/banlist/index.json")
 			dropdown.add(option);
 		})
 		loadBanlist(dropdown)
-		}
+	}
 	);
 
-function loadBanlist(dropdown){
+function loadBanlist(dropdown) {
 	dropdown.disabled = true
 	const selectedValue = dropdown.value;
 	const selectedIndex = dropdown.selectedIndex;
