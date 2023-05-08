@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Time Wizard Banlist Calculator</title>
+	<link rel='stylesheet' id='yugioh-style-patch-css'  href='css/yugioh.css' type='text/css' media='all' />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+  </head>
+  <style>
+	body {
+	  background: #EEE;
+	  font-family: "Roboto", sans-serif;
+	  max-width: 800px;
+	  margin: auto;
+	}
+	table {
+	  border: 1px solid black;
+	  border-spacing: 0;
+	  border-collapse: collapse;	
+	}
+	.separator {
+	  height: 20px;
+	}
+	.dropdown{
+	  font-size: 17px;
+	}
+	</style>
+  <body>
+    <h1>Time Wizard Banlist Calculator</h1>
+    <select id="fileDropdown" class="dropdown">
+		<option value="">Choose a banlist</option>
+	</select>
+
+	<div id="cardlist_forbidden" class="cardlist"></div>
+	
+	<div id="cardlist_limited" class="cardlist"></div>
+
+	<div id="cardlist_semilimited" class="cardlist"></div>
+
+	<div id="cardlist_unlimited" class="cardlist"></div>
+
+	<div class="separator"></div>
+
+    <script src="js/datepicker.js"></script>
+  </body>
+</html>

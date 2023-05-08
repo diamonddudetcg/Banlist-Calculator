@@ -1,0 +1,57 @@
+.cardlist tr td{
+	border: 1px solid #333333;
+	margin-top:50px;
+	font-size: 18px;
+}
+.cardlist a:link{
+	color: #000000;
+}
+.cardlist a:visited{
+	color: #cccccc;
+}
+.cardlist_xyz a:link{
+	color: #FFFFFF
+}
+.cardlist_xyz a:visited{
+	color: #bbbbbb
+}
+.cardlist_atitle td { 
+	color: #000000;
+	background-color: #eeeeee;
+}
+.cardlist_synchro td  {
+	background-color: #CCCCCC;
+	color: #000000;
+}
+.cardlist_xyz td {
+	color: #FFFFFF;
+	background-color: #000000;
+}
+.cardlist_effect td {
+	background-color: #FF8B53;
+	color: #000000;
+}
+.cardlist_ritual td {
+	background-color: #9DB5CC;
+	color: #000000;
+}
+.cardlist_monster td{
+	background-color: #FDE68A;
+	color: #000000;
+}
+.cardlist_fusion td{
+	background-color: #a086b7;
+	color: #000000;
+}
+.cardlist_spell td{
+	background-color: #1D9E74;
+	color: #000000;
+}
+.cardlist_trap td{
+	background-color: #BC5A84;
+	color: #000000;
+}
+.cardlist_link td{
+	background-color: #006ead;
+	color: #000000;
+}
