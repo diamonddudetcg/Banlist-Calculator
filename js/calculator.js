@@ -82,12 +82,12 @@ async function loadData(closestDate) {
 function createTableRow(css_class, card_type, card_id, card_name, card_status) {
 	return `<tr class="${css_class}">
 		<td>${card_type}</td>
-		<td><a href="https://yugipedia.com/wiki/${card_id}">${card_name}</a></td>
+		<td><a href="https://yugipedia.com/wiki/${card_id.toString().padStart(8, '0')}">${card_name}</a></td>
 		<td>${card_status}</td>
 	</tr>`;
 }
 
-function populateTable(cardList, div, crossData, status) {
+function populateTable(cardList, div, crossData, status, checked) {
 	div.innerHTML = '<div class="separator"></div>';
 	const categories = [
 		{ id: 1, name: "Monster", classname: "cardlist_monster" },
@@ -123,59 +123,101 @@ function populateTable(cardList, div, crossData, status) {
 		cardsWithCategory.sort((a, b) => a.name.localeCompare(b.name));
 
 		cardsWithCategory.forEach(card => {
-			const row = table.insertRow();
-			const typeCell = row.insertCell();
-			const nameCell = row.insertCell();
-			const statusCell = row.insertCell();
-			const remarksCell = row.insertCell();
-
-			typeCell.textContent = category.name; // Replace with the card type variable
-			nameCell.innerHTML = `<a href="https://yugipedia.com/wiki/${card.id}">${card.name}</a>`; // Replace with the card ID and name variables
-			statusCell.textContent = status; // Replace with the card status variable
-
 			const remarks = crossData.filter(obj => obj.id === card.id);
-
-			if (remarks.length == 1) {
-				oldCopies = remarks[0].oldCopies
-				if (oldCopies == 3) {
-					remarksCell.textContent = "New"
-				} else if (oldCopies == 2) {
-					remarksCell.textContent = "Was Semi-Limited"
-				} else if (oldCopies == 1) {
-					remarksCell.textContent = "Was Limited"
-				} else if (oldCopies == 0) {
-					remarksCell.textContent = "Was Forbidden"
-				}
+			skip = false
+			if (checked && remarks.length == 0){
+				skip = true
 			}
+			if (!skip){
+				const row = table.insertRow();
+				const typeCell = row.insertCell();
+				const nameCell = row.insertCell();
+				const statusCell = row.insertCell();
+				const remarksCell = row.insertCell();
 
-			row.classList.add(category.classname); // Add the CSS class to the table row
+				typeCell.textContent = category.name; // Replace with the card type variable
+				nameCell.innerHTML = `<a href="https://yugipedia.com/wiki/${card.id}">${card.name}</a>`; // Replace with the card ID and name variables
+				statusCell.textContent = status; // Replace with the card status variable
+
+
+				if (remarks.length == 1) {
+					oldCopies = remarks[0].oldCopies
+					if (oldCopies == 3) {
+						remarksCell.textContent = "New"
+					} else if (oldCopies == 2) {
+						remarksCell.textContent = "Was Semi-Limited"
+					} else if (oldCopies == 1) {
+						remarksCell.textContent = "Was Limited"
+					} else if (oldCopies == 0) {
+						remarksCell.textContent = "Was Forbidden"
+					}
+				}
+
+				row.classList.add(category.classname); // Add the CSS class to the table row
+			}
 		});
 	}
 }
 
-function populateTables(categorizedData, unlimited, crossData) {
+function populateTables(categorizedData, unlimited, crossData, checked) {
 	const forbiddenTable = document.getElementById("cardlist_forbidden")
 	const limitedTable = document.getElementById("cardlist_limited")
 	const semilimitedTable = document.getElementById("cardlist_semilimited")
 	const unlimitedTable = document.getElementById("cardlist_unlimited")
 
 	if (categorizedData.forbidden.length > 0) {
-		populateTable(categorizedData.forbidden, forbiddenTable, crossData, "Forbidden")
+		if (checked){
+			const filteredForbidden = categorizedData.forbidden.filter((card) =>
+				crossData.some((crossCard) => crossCard.id === card.id)
+			);
+			if (filteredForbidden.length > 0){
+				populateTable(categorizedData.forbidden, forbiddenTable, crossData, "Forbidden", checked)
+			} else {
+				forbiddenTable.innerHTML = ""
+			}
+		} else {
+			populateTable(categorizedData.forbidden, forbiddenTable, crossData, "Forbidden", checked)
+		}
 	} else {
 		forbiddenTable.innerHTML = ""
 	}
+
 	if (categorizedData.limited.length > 0) {
-		populateTable(categorizedData.limited, limitedTable, crossData, "Limited")
+		if (checked){
+			const filteredLimited = categorizedData.limited.filter((card) =>
+				crossData.some((crossCard) => crossCard.id === card.id)
+			);
+			if (filteredLimited.length > 0){
+				populateTable(categorizedData.limited, limitedTable, crossData, "Limited", checked)
+			} else {
+				limitedTable.innerHTML = ""
+			}
+		} else {
+			populateTable(categorizedData.limited, limitedTable, crossData, "Limited", checked)
+		}
 	} else {
 		limitedTable.innerHTML = ""
 	}
+
 	if (categorizedData.semilimited.length > 0) {
-		populateTable(categorizedData.semilimited, semilimitedTable, crossData, "Semi-Limited")
+		if (checked){
+			const filteredSemiimited = categorizedData.semilimited.filter((card) =>
+				crossData.some((crossCard) => crossCard.id === card.id)
+			);
+			if (filteredSemiimited.length > 0){
+				populateTable(categorizedData.semilimited, semilimitedTable, crossData, "Semi-Limited", checked)
+			} else {
+				semilimitedTable.innerHTML = ""
+			}
+		} else {
+			populateTable(categorizedData.semilimited, semilimitedTable, crossData, "Semi-Limited", checked)
+		}
 	} else {
-		semilimitedTable.innerHTML = ""
+		limitedTable.innerHTML = ""
 	}
+
 	if (unlimited.length > 0) {
-		populateTable(unlimited, unlimitedTable, crossData, "Unlimited")
+		populateTable(unlimited, unlimitedTable, crossData, "Unlimited", checked)
 	} else {
 		unlimitedTable.innerHTML = ""
 	}
@@ -262,6 +304,7 @@ function crossData(previousData, newData) {
 }
 
 const dropdown = document.getElementById('fileDropdown');
+const checkbox = document.getElementById('changesCheckbox')
 
 fetch("banlist/index.json")
 	.then(response => response.json())
@@ -272,12 +315,13 @@ fetch("banlist/index.json")
 			option.value = filename;
 			dropdown.add(option);
 		})
-		loadBanlist(dropdown)
+		loadBanlist(dropdown, checkbox.checked)
 	}
-	);
+);
 
-function loadBanlist(dropdown) {
+function loadBanlist(dropdown, checked) {
 	dropdown.disabled = true
+	checkbox.disabled = true
 	const selectedValue = dropdown.value;
 	const selectedIndex = dropdown.selectedIndex;
 	const prevIndex = selectedIndex + 1 < dropdown.options.length ? selectedIndex + 1 : -1;
@@ -285,8 +329,9 @@ function loadBanlist(dropdown) {
 
 	if (!prevValue) {
 		loadData(selectedValue).then(data =>{
-			populateTables(data, [], [])
+			populateTables(data, [], [], checked)
 			dropdown.disabled = false
+			checkbox.disabled = false
 		})
 	} else {
 		loadCards().then(
@@ -295,8 +340,9 @@ function loadBanlist(dropdown) {
 					const changes = crossData(oldData, newData);
 					const newlyUnlimitedNames = changes.filter(card => card.newCopies === 3).map(card => card.name);
 					unlimited = convertArrayToNewData(newlyUnlimitedNames, cards, 3)
-					populateTables(newData, unlimited, changes);
+					populateTables(newData, unlimited, changes, checked);
 					dropdown.disabled = false
+					checkbox.disabled = false
 				})
 			)
 		)
@@ -304,6 +350,9 @@ function loadBanlist(dropdown) {
 }
 
 dropdown.addEventListener('change', function () {
-	loadBanlist(this)
+	loadBanlist(this, checkbox.checked)
 });
 
+checkbox.addEventListener("change", () => {
+	loadBanlist(dropdown, checkbox.checked)
+});
