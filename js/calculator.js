@@ -72,6 +72,8 @@ filenames = [
     "2002-03-01.json"
 ]
 
+console.log(filenames)
+
 function findCard(cardname, cardsData) {
 	for (const rawCard of cardsData) {
 		if (rawCard.name.toLowerCase() === cardname.toLowerCase()) {
@@ -332,12 +334,10 @@ function crossData(previousData, newData) {
 			})
 		}
 	}
-	console.log(changes)
 	return changes
 }
 
 const dropdown = document.getElementById('fileDropdown');
-
 
 filenames.forEach(filename => {
 	const option = document.createElement('option');
@@ -363,7 +363,6 @@ dropdown.addEventListener('change', function () {
 					const changes = crossData(oldData, newData);
 					const newlyUnlimitedNames = changes.filter(card => card.newCopies === 3).map(card => card.name);
 					unlimited = convertArrayToNewData(newlyUnlimitedNames, cards, 3)
-					console.log(unlimited)
 					populateTables(newData, unlimited, changes);
 				})
 			)
