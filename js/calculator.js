@@ -72,8 +72,6 @@ filenames = [
     "2002-03-01.json"
 ]
 
-console.log(filenames)
-
 function findCard(cardname, cardsData) {
 	for (const rawCard of cardsData) {
 		if (rawCard.name.toLowerCase() === cardname.toLowerCase()) {
@@ -346,11 +344,11 @@ filenames.forEach(filename => {
 	dropdown.add(option);
 });
 
-dropdown.addEventListener('change', function () {
-	const selectedValue = this.value;
-	const selectedIndex = this.selectedIndex;
-	const prevIndex = selectedIndex + 1 < this.options.length ? selectedIndex + 1 : -1;
-	const prevValue = prevIndex >= 0 ? this.options[prevIndex].value : null;
+function loadBanlist(dropdown){
+	const selectedValue = dropdown.value;
+	const selectedIndex = dropdown.selectedIndex;
+	const prevIndex = selectedIndex + 1 < dropdown.options.length ? selectedIndex + 1 : -1;
+	const prevValue = prevIndex >= 0 ? dropdown.options[prevIndex].value : null;
 
 	if (!prevValue) {
 		loadData(selectedValue).then(data =>
@@ -368,4 +366,10 @@ dropdown.addEventListener('change', function () {
 			)
 		)
 	}
+}
+
+dropdown.addEventListener('change', function () {
+	loadBanlist(this)
 });
+
+loadBanlist(dropdown)
