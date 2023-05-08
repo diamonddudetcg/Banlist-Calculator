@@ -345,6 +345,7 @@ filenames.forEach(filename => {
 });
 
 function loadBanlist(dropdown){
+	dropdown.disabled = true
 	const selectedValue = dropdown.value;
 	const selectedIndex = dropdown.selectedIndex;
 	const prevIndex = selectedIndex + 1 < dropdown.options.length ? selectedIndex + 1 : -1;
@@ -362,6 +363,7 @@ function loadBanlist(dropdown){
 					const newlyUnlimitedNames = changes.filter(card => card.newCopies === 3).map(card => card.name);
 					unlimited = convertArrayToNewData(newlyUnlimitedNames, cards, 3)
 					populateTables(newData, unlimited, changes);
+					dropdown.disabled = false
 				})
 			)
 		)
