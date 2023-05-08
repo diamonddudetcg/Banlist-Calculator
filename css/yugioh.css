@@ -1,4 +1,4 @@
-.cardlist tr td{
+.cardlist tr td th{
 	border: 1px solid #333333;
 	margin-top:50px;
 	font-size: 18px;
@@ -14,10 +14,6 @@
 }
 .cardlist_xyz a:visited{
 	color: #bbbbbb
-}
-.cardlist_atitle td { 
-	color: #000000;
-	background-color: #eeeeee;
 }
 .cardlist_synchro td  {
 	background-color: #CCCCCC;
