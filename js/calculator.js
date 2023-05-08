@@ -213,7 +213,7 @@ function populateTables(categorizedData, unlimited, crossData, checked) {
 			populateTable(categorizedData.semilimited, semilimitedTable, crossData, "Semi-Limited", checked)
 		}
 	} else {
-		limitedTable.innerHTML = ""
+		semilimitedTable.innerHTML = ""
 	}
 
 	if (unlimited.length > 0) {
