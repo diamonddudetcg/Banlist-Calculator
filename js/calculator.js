@@ -284,9 +284,10 @@ function loadBanlist(dropdown) {
 	const prevValue = prevIndex >= 0 ? dropdown.options[prevIndex].value : null;
 
 	if (!prevValue) {
-		loadData(selectedValue).then(data =>
+		loadData(selectedValue).then(data =>{
 			populateTables(data, [], [])
-		)
+			dropdown.disabled = false
+		})
 	} else {
 		loadCards().then(
 			cards => loadData(prevValue).then(
