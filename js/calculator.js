@@ -14,19 +14,19 @@ function convertArrayToNewData(limitArray, cardsData, legalCopies) {
 		if (card != null) {
 			var categoryId = 0
 			if (card.type === "Monster") {
-				if (card.subtype.includes("Normal")) {
+				if (card.subtype === "Normal") {
 					categoryId = 1
-				} else if (card.subtype.includes("Ritual")) {
+				} else if (card.subtype === "Ritual") {
 					categoryId = 3
-				} else if (card.subtype.includes("Fusion")) {
+				} else if (card.subtype === "Fusion") {
 					categoryId = 4
-				} else if (card.subtype.includes("Link")) {
+				} else if (card.subtype === "Link") {
 					categoryId = 5
-				} else if (card.subtype.includes("Synchro")) {
+				} else if (card.subtype === "Synchro") {
 					categoryId = 6
-				} else if (card.subtype.includes("Xyz")) {
+				} else if (card.subtype === "Xyz") {
 					categoryId = 7
-				} else if (card.subtype.includes("Effect")) {
+				} else if (card.subtype === "Effect") {
 					categoryId = 2
 				}
 			} else if (card.type === "Spell") {
